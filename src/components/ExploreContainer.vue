@@ -2,15 +2,39 @@
   <div id="container">
     <strong>{{ name }}</strong>
     <p>Explore <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+    <ion-button @click="methods.getImage()">Get Image</ion-button>
   </div>
 </template>
 
-<script lang="ts">
+<script>
+import {IonButton} from '@ionic/vue'
+import {Plugins, CameraSource, CameraResultType} from '@capacitor/core'
 
+const {Camera} = Plugins
 export default {
   name: 'ExploreContainer',
   props: {
     name: String
+  },
+  components:{
+    IonButton
+  },
+  setup() {
+    const methods = {
+      getImage: () => {
+        Camera.getPhoto({
+          quality: 100,
+          source: CameraSource.Camera,
+          resultType: CameraResultType.Base64
+        }).then((res) => {
+          console.log(res)
+        })
+      }
+    }
+
+    return {
+      methods
+    }
   }
 }
 </script>
